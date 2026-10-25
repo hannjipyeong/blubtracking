@@ -7,6 +7,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const PORT = process.env.PORT || 3000;
 const BASE_DIR = __dirname;
@@ -70,9 +71,21 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
+  let localIp = 'localhost';
+  const nets = os.networkInterfaces();
+  for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+      if (net.family === 'IPv4' && !net.internal) {
+        localIp = net.address;
+        break;
+      }
+    }
+  }
+
   console.log(`\n======================================================`);
   console.log(`🌟 Server BlubTracking Berhasil Dijalankan!`);
-  console.log(`👉 Buka di Browser: http://localhost:${PORT}`);
+  console.log(`💻 Buka di Laptop/PC : http://localhost:${PORT}`);
+  console.log(`📱 Buka di HP (WiFi) : http://${localIp}:${PORT}`);
   console.log(`======================================================\n`);
 });
 

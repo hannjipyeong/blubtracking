@@ -19,6 +19,7 @@ export class UIController {
 
     // Tombol Kontrol
     this.btnToggleCam = document.getElementById('btn-toggle-cam');
+    this.btnFlipCam = document.getElementById('btn-flip-cam');
     this.btnToggleSkeleton = document.getElementById('btn-toggle-skeleton');
     this.btnToggleSound = document.getElementById('btn-toggle-sound');
     this.btnClearCanvas = document.getElementById('btn-clear-canvas');
@@ -40,6 +41,7 @@ export class UIController {
 
   _bindEvents() {
     this.btnToggleCam?.addEventListener('click', () => this.app.toggleCamera());
+    this.btnFlipCam?.addEventListener('click', () => this.app.flipCamera());
     this.btnToggleSkeleton?.addEventListener('click', () => {
       this.app.settings.showSkeleton = !this.app.settings.showSkeleton;
       this.btnToggleSkeleton.classList.toggle('active', this.app.settings.showSkeleton);

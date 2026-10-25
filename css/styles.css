@@ -35,6 +35,7 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-main);
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -164,6 +165,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 #webcam-video { display: none; }
@@ -340,4 +344,248 @@ body {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE PHONE & TABLET)
+   ========================================================================== */
+
+/* Tablet & Layar Sedang (<= 1024px) */
+@media (max-width: 1024px) {
+  .app-container {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .floating-controls {
+    bottom: 16px;
+    padding: 7px 12px;
+    gap: 8px;
+  }
+}
+
+/* Smartphone / Layar Ponsel (<= 768px) */
+@media (max-width: 768px) {
+  html, body {
+    height: 100%;
+    min-height: 100dvh;
+    overflow: hidden;
+  }
+
+  .app-container {
+    padding: 8px 10px;
+    gap: 8px;
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Header Ponsel Kompak */
+  .app-header {
+    padding: 8px 12px;
+    gap: 8px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+
+  .brand-text h1 {
+    font-size: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .brand-text .tagline {
+    display: none; /* Sembunyikan slogan di layar HP agar header tetap ramping 1 baris */
+  }
+
+  .header-status {
+    gap: 6px;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+  }
+
+  .status-badge.fps {
+    padding: 4px 8px;
+  }
+
+  /* Layar Kamera Mengisi Penuh Layar Ponsel */
+  .viewport-section {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .canvas-wrapper {
+    aspect-ratio: auto; /* Jangan paksa 16:9 di layar HP vertikal */
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    border-radius: var(--radius-md);
+  }
+
+  #output-canvas {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    touch-action: none;
+  }
+
+  /* Gesture HUD di Layar HP */
+  .gesture-hud {
+    top: 10px;
+    padding: 6px 14px;
+    font-size: 11.5px;
+    max-width: 90%;
+    gap: 6px;
+  }
+
+  .hud-emoji {
+    font-size: 16px;
+  }
+
+  /* Tombol Kontrol Bawah Mobile (Scrollable Horizontal Pill Bar) */
+  .floating-controls {
+    bottom: 12px;
+    padding: 6px 8px;
+    gap: 6px;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    background: rgba(15, 23, 42, 0.92);
+  }
+
+  .floating-controls::-webkit-scrollbar {
+    display: none;
+  }
+
+  .control-btn {
+    padding: 8px 10px;
+    font-size: 11.5px;
+    gap: 4px;
+    flex-shrink: 0;
+    min-height: 38px;
+  }
+
+  .control-btn .icon {
+    font-size: 15px;
+  }
+
+  /* Banner Error Kamera pada Ponsel */
+  .camera-error-banner {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .camera-error-banner .error-icon {
+    font-size: 38px;
+  }
+
+  .camera-error-banner h3 {
+    font-size: 17px;
+  }
+
+  .camera-error-banner p {
+    font-size: 12.5px;
+  }
+
+  .btn-retry-camera {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+}
+
+/* Smartphone Layar Kecil (<= 480px) & Dukungan Safe Area (iPhone Notch / Dynamic Island) */
+@media (max-width: 480px) {
+  .app-container {
+    padding-top: max(6px, env(safe-area-inset-top));
+    padding-right: max(6px, env(safe-area-inset-right));
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    padding-left: max(6px, env(safe-area-inset-left));
+    gap: 6px;
+  }
+
+  .brand-text h1 {
+    font-size: 15px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .floating-controls {
+    bottom: max(10px, env(safe-area-inset-bottom));
+    padding: 5px 6px;
+    gap: 5px;
+  }
+
+  .control-btn {
+    padding: 6px 9px;
+    font-size: 10.5px;
+    gap: 3px;
+  }
+}
+
+/* Mode Ponsel Horizontal / Landscape (<= 520px tinggi) */
+@media (max-height: 520px) and (orientation: landscape) {
+  .app-container {
+    padding: 4px 8px;
+    gap: 4px;
+    height: 100dvh;
+  }
+
+  .app-header {
+    padding: 4px 10px;
+  }
+
+  .brand-logo {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+  }
+
+  .brand-text h1 {
+    font-size: 14px;
+  }
+
+  .brand-text .tagline {
+    display: none;
+  }
+
+  .canvas-wrapper {
+    flex: 1;
+    min-height: 0;
+    border-radius: var(--radius-sm);
+  }
+
+  .floating-controls {
+    bottom: 6px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .control-btn {
+    padding: 5px 8px;
+    font-size: 10.5px;
+    min-height: 32px;
+  }
 }

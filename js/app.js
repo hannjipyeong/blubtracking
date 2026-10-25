@@ -28,6 +28,7 @@ export class App {
     this.ui = new UIController(this);
 
     // Status internal
+    this.facingMode = 'user';
     this.hands = null;
     this.cameraStream = null;
     this.isCameraRunning = false;
@@ -50,10 +51,13 @@ export class App {
     // 2. Inisialisasi MediaPipe Hands
     this._initMediaPipe();
 
-    // 3. Mulai Kamera
+    // 3. Inisialisasi sentuhan layar mobile (Touch Events)
+    this._initTouchEvents();
+
+    // 4. Mulai Kamera
     await this.startCamera();
 
-    // 4. Mulai Render Loop
+    // 5. Mulai Render Loop
     requestAnimationFrame(this._mainLoop.bind(this));
   }
 
@@ -86,7 +90,7 @@ export class App {
         video: {
           width: { ideal: 1280 },
           height: { ideal: 720 },
-          facingMode: 'user'
+          facingMode: this.facingMode || 'user'
         },
         audio: false
       };
@@ -101,11 +105,14 @@ export class App {
       this.isCameraRunning = true;
       this._updateCanvasSize();
       window.addEventListener('resize', () => this._updateCanvasSize());
+      window.addEventListener('orientationchange', () => {
+        setTimeout(() => this._updateCanvasSize(), 200);
+      });
 
       const permBanner = document.getElementById('camera-error-banner');
       if (permBanner) permBanner.hidden = true;
 
-      console.log('📷 Kamera berhasil dinyalakan.');
+      console.log(`📷 Kamera (${this.facingMode}) berhasil dinyalakan.`);
     } catch (err) {
       console.error('Gagal mengakses kamera:', err);
       const permBanner = document.getElementById('camera-error-banner');
@@ -117,6 +124,77 @@ export class App {
         }
       }
     }
+  }
+
+  async flipCamera() {
+    this.facingMode = this.facingMode === 'user' ? 'environment' : 'user';
+    // Mirror selfie mode jika kamera depan, jangan mirror jika kamera belakang
+    this.settings.mirrorCamera = this.facingMode === 'user';
+    this.stopCamera();
+    await this.startCamera();
+    this.audioManager.play('click');
+  }
+
+  /**
+   * Dukungan sentuhan layar mobile (Touch):
+   * Memungkinkan pengguna menggeser stiker hewan langsung dengan jari di layar HP
+   */
+  _initTouchEvents() {
+    const canvas = this.canvas;
+    let activeTouchId = null;
+
+    const getCanvasPos = (touch) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      return {
+        x: (touch.clientX - rect.left) * scaleX,
+        y: (touch.clientY - rect.top) * scaleY
+      };
+    };
+
+    canvas.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        activeTouchId = touch.identifier;
+        const pos = getCanvasPos(touch);
+        const target = this.stickerEngine.findStickerAt(pos.x, pos.y);
+        if (target) {
+          target.isHeld = true;
+          this.stickerEngine.heldStickers.set('touch', target);
+          this.audioManager.play('click');
+          if (e.cancelable) e.preventDefault();
+        }
+      }
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        if (touch.identifier === activeTouchId && this.stickerEngine.heldStickers.has('touch')) {
+          const pos = getCanvasPos(touch);
+          const sticker = this.stickerEngine.heldStickers.get('touch');
+          sticker.targetX = pos.x;
+          sticker.targetY = pos.y;
+          sticker.isHeld = true;
+          if (e.cancelable) e.preventDefault();
+          break;
+        }
+      }
+    }, { passive: false });
+
+    const endTouch = () => {
+      if (this.stickerEngine.heldStickers.has('touch')) {
+        const sticker = this.stickerEngine.heldStickers.get('touch');
+        sticker.isHeld = false;
+        this.stickerEngine.heldStickers.delete('touch');
+        this.stickerEngine.spawnParticleBurst(sticker.x, sticker.y, ['#FFFFFF', '#B2EBF2'], 8);
+        activeTouchId = null;
+      }
+    };
+
+    canvas.addEventListener('touchend', endTouch, { passive: true });
+    canvas.addEventListener('touchcancel', endTouch, { passive: true });
   }
 
   stopCamera() {
