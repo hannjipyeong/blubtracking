@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <filter id="panda-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#212121" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#panda-shadow)">
+    <!-- Black Round Ears -->
+    <circle cx="44" cy="48" r="20" fill="#212121"/>
+    <circle cx="116" cy="48" r="20" fill="#212121"/>
+
+    <!-- White Head -->
+    <ellipse cx="80" cy="85" rx="54" ry="46" fill="#FFFFFF"/>
+
+    <!-- Black Eye Patches (Angled) -->
+    <ellipse cx="56" cy="82" rx="15" ry="19" fill="#212121" transform="rotate(-15 56 82)"/>
+    <ellipse cx="104" cy="82" rx="15" ry="19" fill="#212121" transform="rotate(15 104 82)"/>
+
+    <!-- White Eyes & Catchlights Inside Eye Patches -->
+    <circle cx="56" cy="80" r="5" fill="#FFFFFF"/>
+    <circle cx="104" cy="80" r="5" fill="#FFFFFF"/>
+    <circle cx="57" cy="80" r="3" fill="#212121"/>
+    <circle cx="103" cy="80" r="3" fill="#212121"/>
+    <circle cx="55" cy="78" r="1.5" fill="#FFFFFF"/>
+    <circle cx="105" cy="78" r="1.5" fill="#FFFFFF"/>
+
+    <!-- Black Nose -->
+    <ellipse cx="80" cy="94" rx="7" ry="5" fill="#212121"/>
+
+    <!-- Happy Mouth -->
+    <path d="M 80,99 L 80,103" stroke="#212121" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M 74,103 Q 80,108 80,103 Q 80,108 86,103" fill="none" stroke="#212121" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Soft Pink Blush -->
+    <ellipse cx="44" cy="98" rx="8" ry="5" fill="#FF80AB" opacity="0.6"/>
+    <ellipse cx="116" cy="98" rx="8" ry="5" fill="#FF80AB" opacity="0.6"/>
+
+    <!-- Paws holding Bamboo Shoot -->
+    <ellipse cx="46" cy="124" rx="12" ry="9" fill="#212121"/>
+    <ellipse cx="114" cy="124" rx="12" ry="9" fill="#212121"/>
+    <!-- Bamboo leaf -->
+    <path d="M 76,128 C 85,116 100,118 108,122 C 98,128 86,132 76,128 Z" fill="#00E676"/>
+    <path d="M 80,126 L 104,123" stroke="#00C853" stroke-width="1.5"/>
+  </g>
+</svg>
+

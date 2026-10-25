@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlubTracking — Interactive Hand Gesture &amp; Sticker Playground</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">🖐️✨</div>
+        <div class="brand-text">
+          <h1>BlubTracking</h1>
+          <p class="tagline">Pengenal Gestur Tangan &amp; Generator Stiker Interaktif</p>
+        </div>
+      </div>
+      <div class="header-status">
+        <span id="hand-status-badge" class="status-badge idle">👀 Mengarahkan Kamera...</span>
+        <span id="fps-counter" class="status-badge fps">0 FPS</span>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <section class="viewport-section">
+        <div class="canvas-wrapper">
+          <video id="webcam-video" playsinline muted autoplay></video>
+          <canvas id="output-canvas"></canvas>
+
+          <div id="gesture-hud" class="gesture-hud">
+            <span id="gesture-hud-text">
+              <span class="hud-emoji">🪼</span>
+              <strong>Jempol + Telunjuk</strong>: Memunculkan <em>Ubur-Ubur Berenang</em>
+            </span>
+          </div>
+
+          <div id="camera-error-banner" class="camera-error-banner" hidden>
+            <div class="error-icon">⚠️</div>
+            <div class="error-content">
+              <h3>Izin Kamera Diperlukan</h3>
+              <p id="camera-error-message">Mohon izinkan akses kamera pada peramban Anda untuk mengaktifkan pelacakan gestur tangan.</p>
+              <small>Pastikan website dibuka melalui <code>http://localhost:3000</code> atau koneksi aman (HTTPS).</small>
+            </div>
+            <button class="btn-retry-camera" onclick="window.location.reload()">Muat Ulang Halaman</button>
+          </div>
+
+          <div class="floating-controls">
+            <button id="btn-toggle-cam" class="control-btn" title="Nyalakan/Jeda Kamera">
+              <span class="icon">⏸️</span>
+              <span class="label">Jeda Kamera</span>
+            </button>
+            <button id="btn-toggle-skeleton" class="control-btn active" title="Tampilkan/Sembunyikan Kerangka Tangan">
+              <span class="icon">🦴</span>
+              <span class="label">Kerangka</span>
+            </button>
+            <button id="btn-toggle-sound" class="control-btn active" title="Efek Suara Audio">
+              <span class="icon">🔊</span>
+              <span class="label">Suara</span>
+            </button>
+            <button id="btn-clear-canvas" class="control-btn" title="Hapus Semua Stiker dari Layar">
+              <span class="icon">🧹</span>
+              <span class="label">Bersihkan</span>
+            </button>
+            <button id="btn-snapshot" class="control-btn btn-primary" title="Ambil Foto">
+              <span class="icon">📸</span>
+              <span class="label">Ambil Foto</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    if (window.location.protocol === 'file:') {
+      window.addEventListener('DOMContentLoaded', () => {
+        const banner = document.getElementById('camera-error-banner');
+        const msg = document.getElementById('camera-error-message');
+        if (banner) banner.hidden = false;
+        if (msg) msg.innerHTML = '<strong>Perhatian:</strong> Buka via <code>file://</code> tidak didukung.<br>Jalankan <code>npm start</code> lalu buka <a href="http://localhost:3000" style="color:#00e5ff">http://localhost:3000</a>.';
+      });
+    }
+  </script>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

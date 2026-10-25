@@ -1,0 +1,21 @@
+{
+  "name": "blubtracking",
+  "version": "1.0.0",
+  "description": "Interactive Hand Gesture Tracking and Sticker Playground with MediaPipe",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "hand-tracking",
+    "gestures",
+    "mediapipe",
+    "stickers",
+    "canvas",
+    "webrtc"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

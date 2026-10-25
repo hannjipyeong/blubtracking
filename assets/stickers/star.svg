@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="35%" stop-color="#FFF176" />
+      <stop offset="70%" stop-color="#FFD54F" />
+      <stop offset="100%" stop-color="#FFA000" />
+    </radialGradient>
+    <filter id="starShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#FFD700" flood-opacity="0.8" />
+    </filter>
+  </defs>
+  <path d="M 60 12 Q 60 60 108 60 Q 60 60 60 108 Q 60 60 12 60 Q 60 60 60 12 Z" 
+        fill="url(#starGlow)" filter="url(#starShadow)" stroke="#FFF" stroke-width="2" />
+  <path d="M 92 18 Q 92 30 104 30 Q 92 30 92 42 Q 92 30 80 30 Q 92 30 92 18 Z" fill="#FFFDE7" />
+  <path d="M 28 82 Q 28 92 38 92 Q 28 92 28 102 Q 28 92 18 92 Q 28 92 28 82 Z" fill="#FFFDE7" />
+  <circle cx="60" cy="60" r="4" fill="#FFFFFF" />
+</svg>
+

@@ -1,0 +1,343 @@
+/* ==========================================================================
+   BLUBTRACKING — HAND GESTURE & STICKER PLAYGROUND STYLES
+   ========================================================================== */
+
+:root {
+  --bg-primary: #090d16;
+  --bg-secondary: #0f172a;
+  --bg-card: rgba(18, 26, 47, 0.75);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --accent-cyan: #00e5ff;
+  --accent-yellow: #ffb300;
+  --accent-green: #00e676;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-card: 0 10px 30px -8px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(0, 229, 255, 0.25);
+  --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* PENTING: pastikan [hidden] selalu menang atas display apapun */
+[hidden] { display: none !important; }
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(0, 229, 255, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(171, 71, 188, 0.08) 0px, transparent 50%);
+}
+
+/* ==========================================================================
+   APP SHELL
+   ========================================================================== */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  gap: 16px;
+  flex: 1;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-logo {
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-glow);
+}
+
+.brand-text h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-text .tagline {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  transition: var(--transition-smooth);
+}
+
+.status-badge.idle { color: var(--text-muted); }
+
+.status-badge.online {
+  background: rgba(0, 230, 118, 0.15);
+  color: #00e676;
+  border-color: rgba(0, 230, 118, 0.4);
+  box-shadow: 0 0 12px rgba(0, 230, 118, 0.2);
+}
+
+.status-badge.fps {
+  color: var(--accent-cyan);
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.25);
+  font-family: monospace;
+}
+
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.viewport-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#webcam-video { display: none; }
+
+#output-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   GESTURE HUD
+   ========================================================================== */
+
+.gesture-hud {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.gesture-hud.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+}
+
+.hud-emoji {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   CAMERA ERROR BANNER
+   ========================================================================== */
+
+.camera-error-banner {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 32px;
+  gap: 16px;
+  z-index: 20;
+}
+
+.camera-error-banner .error-icon { font-size: 48px; }
+
+.camera-error-banner h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff5252;
+}
+
+.camera-error-banner p {
+  color: var(--text-muted);
+  max-width: 520px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.camera-error-banner small code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--accent-cyan);
+}
+
+.btn-retry-camera {
+  background: var(--accent-cyan);
+  color: #0b1120;
+  border: none;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-retry-camera:hover {
+  background: #33ecff;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   FLOATING ACTION BAR
+   ========================================================================== */
+
+.floating-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.control-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-main);
+  border: 1px solid var(--border-subtle);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  user-select: none;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn.active {
+  background: rgba(0, 229, 255, 0.15);
+  border-color: rgba(0, 229, 255, 0.5);
+  color: var(--accent-cyan);
+}
+
+.control-btn.btn-primary {
+  background: linear-gradient(135deg, #00b0ff, #00e5ff);
+  color: #0b1120;
+  border: none;
+}
+
+.control-btn.btn-primary:hover {
+  box-shadow: 0 0 16px rgba(0, 229, 255, 0.5);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

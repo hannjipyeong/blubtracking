@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <filter id="rainbowShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+  <g filter="url(#rainbowShadow)">
+    <path d="M 16 85 A 44 44 0 0 1 104 85" fill="none" stroke="#FF5252" stroke-width="8" stroke-linecap="round" />
+    <path d="M 24 85 A 36 36 0 0 1 96 85" fill="none" stroke="#FF9800" stroke-width="8" />
+    <path d="M 32 85 A 28 28 0 0 1 88 85" fill="none" stroke="#FFEB3B" stroke-width="8" />
+    <path d="M 40 85 A 20 20 0 0 1 80 85" fill="none" stroke="#4CAF50" stroke-width="8" />
+    <path d="M 48 85 A 12 12 0 0 1 72 85" fill="none" stroke="#2196F3" stroke-width="8" />
+    <path d="M 56 85 A 4 4 0 0 1 64 85" fill="none" stroke="#9C27B0" stroke-width="8" />
+  </g>
+  <g fill="#FFF" stroke="#E0E0E0" stroke-width="1.5">
+    <ellipse cx="22" cy="85" rx="14" ry="10" />
+    <circle cx="16" cy="78" r="8" />
+    <circle cx="28" cy="78" r="9" />
+  </g>
+  <g fill="#FFF" stroke="#E0E0E0" stroke-width="1.5">
+    <ellipse cx="98" cy="85" rx="14" ry="10" />
+    <circle cx="92" cy="78" r="8" />
+    <circle cx="104" cy="78" r="9" />
+  </g>
+</svg>
+
